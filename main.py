@@ -25,19 +25,27 @@ def omikuji():
 @app.get("/index")
 def index():
     html_content = """
-    <html>
-    <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-    <title>阿部寛のホームページ</title>
-    </head>
-    <frameset cols=18,82>
-      <frame src="menu.htm" name="left">
-      <frame src="top.htm" name="right">
-      <noframes>
-      <body></body>
-      </noframes>
-    </frameset>
-    </html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTMLの基本構造</title>
+</head>
+<body>
+
+<!-- 見出しの例 -->
+<h1>これは見出し1です</h1>
+<h2>これは見出し2です</h2>
+
+<!-- 段落の例 -->
+<p>これは段落です。段落タグを使ってテキストをまとめます。</p>
+
+<!-- リンクの例 -->
+<p>こちらは<a href="https://example.com">リンク</a>です。クリックすると他のページに移動します。</p>
+
+</body>
+</html>
     """
     return HTMLResponse(content=html_content, status_code=200)
 
