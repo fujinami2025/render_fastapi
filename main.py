@@ -45,7 +45,5 @@ class PresentRequest(BaseModel):
     present: str
 
 @app.post("/present")
-async def give_present(present_req: PresentRequest):
-    return {
-        "response": f"(from server) ハッピーハロウィン！ {present_req.present} お菓子くれなきゃ、いたずらしちゃうぞ。"
-    }
+async def give_present(present):
+    return {"response": f"サーバです。メリークリスマス！ {present}ありがとう。お返しはキャンディーです。"}
