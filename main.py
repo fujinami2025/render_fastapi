@@ -1,11 +1,10 @@
 from typing import Optional
-
 from fastapi import FastAPI
-
-import random  # randomライブラリを追加
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
+import random
 
 app = FastAPI()
-
 
 @app.get("/")
 async def root():
@@ -18,46 +17,35 @@ def read_item(item_id: int, q: Optional[str] = None):
 @app.get("/omikuji")
 def omikuji():
     omikuji_list = [
-        "大吉",
-        "中吉",
-        "小吉",
-        "吉",
-        "半吉",
-        "末吉",
-        "末小吉",
-        "凶",
-        "小凶",
-        "大凶"
+        "大吉", "中吉", "小吉", "吉", "半吉",
+        "末吉", "末小吉", "凶", "小凶", "大凶"
     ]
-    
-    return {"result" : omikuji_list[random.randrange(10)]}
-
-    from fastapi.responses import HTMLResponse #インポート
-
-### コードいろいろ... ###
+    return {"result": random.choice(omikuji_list)}
 
 @app.get("/index")
 def index():
     html_content = """
-
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<meta name="GENERATOR" content="JustSystems Homepage Builder Version 20.0.6.0 for Windows">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<title>阿部寛のホームページ</title>
-</head>
-<frameset cols=18,82>
-  <frame src="menu.htm" marginheight="0" marginwidth="0" scrolling="auto" name="left">
-  <frame src="top.htm" marginheight="0" marginwidth="0" scrolling="auto" name="right">
-  <noframes>
-  <body></body>
-  </noframes>
-</frameset>
-</html>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <title>阿部寛のホームページ</title>
+    </head>
+    <frameset cols=18,82>
+      <frame src="menu.htm" name="left">
+      <frame src="top.htm" name="right">
+      <noframes>
+      <body></body>
+      </noframes>
+    </frameset>
+    </html>
     """
     return HTMLResponse(content=html_content, status_code=200)
 
-    @app.post("/present")
-async def give_present(present):
-    return {"response": f"(from server)ハッピーハロウィン！ {present}お菓子くれなきゃ、いたずらしちゃうぞ。"}  # f文字列というPythonの機能を使っている
+class PresentRequest(BaseModel):
+    present: str
+
+@app.post("/present")
+async def give_present(present_req: PresentRequest):
+    return {
+        "response": f"(from server) ハッピーハロウィン！ {present_req.present} お菓子くれなきゃ、いたずらしちゃうぞ。"
+    }
